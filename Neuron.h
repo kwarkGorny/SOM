@@ -58,15 +58,15 @@ public:
     {
         std::uniform_real_distribution<double> uniform(0,1);
         m_NeuronMatrix.reserve(size);
-        for(auto&& neurons : m_NeuronMatrix)
+        for(int ii =0; ii < size; ++ii)
         {
-            neurons.reserve(size);
-            for(auto&& neuron : neurons)
+            m_NeuronMatrix[ii].reserve(size);
+            for(int jj =0; jj < size; ++jj)
             {
-                neuron.weights.reserve(inputSize);
+                m_NeuronMatrix[ii][jj].weights.reserve(inputSize);
                 for(int kk = 0; kk <inputSize; ++kk)
                 {
-                    neuron.weights.push_back(uniform(RANDOMSYSTEM));
+                    m_NeuronMatrix[ii][jj].weights.push_back(uniform(RANDOMSYSTEM));
                 }
             }
         }
@@ -82,13 +82,14 @@ public:
            if(radius < 1) return;
            const int radiusSqr = radius *radius;
 
-           const double learningRate = decayFunction(m_StartLearningRate, timeIter, numOfIterations);
-           const double sigma = 2 * learningRate * learningRate;
            std::vector<double> const& input = data[dataRandomizer(RANDOMSYSTEM)];
            const PointI bmu = FindBMU(input);
-
            const int startPos = std::max(bmu.x - radius, 0);
            const int endPos = std::min(bmu.x + radius,(int)m_NeuronMatrix.size());
+
+           const double learningRate = decayFunction(m_StartLearningRate, timeIter, numOfIterations);
+           const double sigma = 2 * learningRate * learningRate;
+
            for(int ii = startPos ; ii < endPos; ++ii)
            {
                const int iiSqr = ii*ii;

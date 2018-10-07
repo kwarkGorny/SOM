@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     bmuRect.setFillColor(sf::Color::Yellow);
 
 
-    const auto& drawNetwork = [&](){
+    const auto drawNetwork = [&](){
         window.clear();
         for(int ii =0; ii < networkSize; ++ii )
         {
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
                     }
                     else if(e.key.code == sf::Keyboard::K) // update network by 20 iteration from 100 random inputs
                     {
-                        auto data = SOM::CreateRandomData(3,100);
+                        const auto data = SOM::CreateRandomData(3,100);
                         network.ProcessNetwork(data, startingRadius, learningRate, 20);
                         drawNetwork();
                     }
